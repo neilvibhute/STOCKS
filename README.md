@@ -33,24 +33,7 @@ Open `http://127.0.0.1:8000`.
 
 ## Deployment
 
-### Deploy to Render (Free)
 
-1. Push to GitHub
-2. Go to [render.com](https://render.com) and sign in
-3. Click "New +" → "Web Service"
-4. Connect your GitHub repo
-5. Configure:
-   - **Build Command**: `pip install -r requirements.txt`
-   - **Start Command**: `uvicorn app:app --host 0.0.0.0 --port $PORT`
-   - **Environment**: Python 3
-
-### Deploy to Railway (Free)
-
-1. Push to GitHub
-2. Go to [railway.app](https://railway.app) and sign in
-3. Click "New Project" → "Deploy from GitHub repo"
-4. Select your repo
-5. Railway auto-detects Python and uses Procfile
 
 ## Notes
 
