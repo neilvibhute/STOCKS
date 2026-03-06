@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stock Rule Checklist</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <main class="container">
+      <section class="hero">
+        <h1>Stock Checklist Evaluator</h1>
+        <p>Enter a stock name or ticker. The app fetches Screener data and evaluates 34 rules.</p>
+      </section>
+
+      <section class="search-card">
+        <form id="stock-form">
+          <label for="query">Stock Name / Ticker</label>
+          <div class="controls">
+            <input id="query" name="query" type="text" placeholder="INFY, TCS, RELIANCE" required />
+            <button type="submit">Evaluate</button>
+          </div>
+        </form>
+        <p id="status" class="status"></p>
+      </section>
+
+      <section id="summary" class="summary hidden"></section>
+
+      <section class="table-wrap hidden" id="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Index</th>
+              <th>Rule Name</th>
+              <th>Pass/Fail</th>
+              <th>Reason</th>
+            </tr>
+          </thead>
+          <tbody id="results-body"></tbody>
+        </table>
+      </section>
+    </main>
+
+    <script>
+      const form = document.getElementById("stock-form");
+      const statusEl = document.getElementById("status");
+      const summaryEl = document.getElementById("summary");
+      const tableWrap = document.getElementById("table-wrap");
+      const bodyEl = document.getElementById("results-body");
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const query = document.getElementById("query").value.trim();
+        if (!query) {
+          return;
+        }
+
+        statusEl.textContent = "Fetching Screener data and evaluating rules...";
+        summaryEl.classList.add("hidden");
+        tableWrap.classList.add("hidden");
+        bodyEl.innerHTML = "";
+
+        try {
+          const response = await fetch("/api/evaluate", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ query }),
+          });
+
+          const data = await response.json();
+          if (!response.ok) {
+            throw new Error(data.detail || "Evaluation failed.");
+          }
+
+          statusEl.textContent = "Evaluation complete.";
+          summaryEl.innerHTML = `
+            <h2>${data.stock_name}</h2>
+            <p><strong>Passed:</strong> ${data.passed_points} / ${data.evaluated_points} evaluated rules (${data.total_points} total)</p>
+            <p><strong>Score:</strong> ${data.score}% <span style="color: #5b6372; font-size: 0.9em;">(based on ${data.evaluated_points} evaluated rules)</span></p>
+            <p><strong>Source:</strong> <a href="${data.source_url}" target="_blank" rel="noreferrer">${data.source_url}</a></p>
+          `;
+          summaryEl.classList.remove("hidden");
+
+          for (const rule of data.rules) {
+            const row = document.createElement("tr");
+            let badgeClass = "fail";
+            if (rule.status === "PASS") badgeClass = "pass";
+            if (rule.status === "N/A") badgeClass = "na";
+            
+            row.innerHTML = `
+              <td>${rule.index}</td>
+              <td>${rule.rule_name}</td>
+              <td><span class="badge ${badgeClass}">${rule.status}</span></td>
+              <td>${rule.reason}</td>
+            `;
+            bodyEl.appendChild(row);
+          }
+
+          tableWrap.classList.remove("hidden");
+        } catch (error) {
+          statusEl.textContent = `Error: ${error.message}`;
+        }
+      });
+    </script>
+  </body>
+</html>

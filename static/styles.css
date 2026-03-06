@@ -1,0 +1,156 @@
+:root {
+  --bg-0: #f4efe4;
+  --bg-1: #fdfaf4;
+  --ink: #1c1f26;
+  --muted: #5b6372;
+  --accent: #0d6d77;
+  --accent-2: #f2a541;
+  --ok: #127c4b;
+  --bad: #b43f3f;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Avenir Next", "Segoe UI", sans-serif;
+  color: var(--ink);
+  background: radial-gradient(circle at 10% 0%, #fff3d7 0, transparent 40%),
+    radial-gradient(circle at 100% 10%, #d5f0f3 0, transparent 38%),
+    linear-gradient(180deg, var(--bg-0), var(--bg-1));
+}
+
+.container {
+  width: min(1040px, 92%);
+  margin: 2rem auto 3rem;
+}
+
+.hero h1 {
+  margin: 0;
+  font-size: clamp(1.7rem, 3vw, 2.6rem);
+  letter-spacing: 0.2px;
+}
+
+.hero p {
+  margin: 0.6rem 0 0;
+  color: var(--muted);
+}
+
+.search-card {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  border-radius: 14px;
+  background: #ffffffcc;
+  border: 1px solid #e6dece;
+  box-shadow: 0 14px 30px #cab88d44;
+}
+
+label {
+  font-weight: 600;
+}
+
+.controls {
+  display: flex;
+  gap: 0.7rem;
+  margin-top: 0.55rem;
+}
+
+input {
+  flex: 1;
+  padding: 0.75rem 0.9rem;
+  border-radius: 10px;
+  border: 1px solid #cdc8bf;
+  font-size: 0.98rem;
+}
+
+button {
+  border: 0;
+  background: linear-gradient(135deg, var(--accent), #158a97);
+  color: #fff;
+  padding: 0.75rem 1rem;
+  font-weight: 700;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.status {
+  margin: 0.8rem 0 0;
+  color: var(--muted);
+}
+
+.summary {
+  margin-top: 1rem;
+  padding: 1rem;
+  border-radius: 12px;
+  background: #ffffffcc;
+  border: 1px solid #e6dece;
+}
+
+.summary h2 {
+  margin: 0 0 0.4rem;
+}
+
+.table-wrap {
+  margin-top: 1rem;
+  overflow-x: auto;
+  border: 1px solid #e4dccb;
+  border-radius: 12px;
+  background: #fffcf7;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 780px;
+}
+
+th,
+td {
+  padding: 0.7rem;
+  text-align: left;
+  border-bottom: 1px solid #eae3d8;
+  vertical-align: top;
+}
+
+th {
+  background: #fbf5e8;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.22rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.badge.pass {
+  background: #d8f2e4;
+  color: var(--ok);
+}
+
+.badge.fail {
+  background: #f9dfdf;
+  color: var(--bad);
+}
+
+.badge.na {
+  background: #e8e8ea;
+  color: var(--muted);
+}
+
+.hidden {
+  display: none;
+}
+
+@media (max-width: 760px) {
+  .controls {
+    flex-direction: column;
+  }
+
+  button {
+    width: 100%;
+  }
+}
